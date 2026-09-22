@@ -1,0 +1,31 @@
+# Database files (runtime artifacts, not source)
+*.db
+*.sqlite
+*.sqlite3
+
+# Generated training data (regenerate with generate_training_data.py)
+training_data.csv
+
+# Trained model artifacts (regenerate with train_model.py)
+*.pkl
+*.joblib
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.pytest_cache/
+.venv/
+venv/
+env/
+
+# Environment variables / secrets
+.env
+.env.local
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/
+*.swp
