@@ -290,7 +290,7 @@ pytest test_fraud_detector.py::TestIntegration -v
 pytest test_fraud_detector.py -v
 ```
 
-## 📈 Phase 1 Scope (What You're Building)
+## 📈 Phase 1 Scope (What we're Building)
 
 ✅ **Done:**
 - Database schema for transactions, profiles, decisions
@@ -314,7 +314,7 @@ pytest test_fraud_detector.py -v
 - [ ] Beneficiary account risk scoring (cross-institutional)
 - [ ] Machine learning model (gradient boosted trees) instead of rules
 
-## 🎯 Key Decisions You Made
+## 🎯 Key Decisions Made :
 
 ### Q: Why not try to reverse the transaction?
 **A:** UPI is irrevocable. Money settles in 5 seconds. You can't reverse a SUCCESSFUL transaction; you can only file a chargeback, which is a weeks-long process. By then the money is in a mule account and gone. Prevention is the only option.
@@ -327,44 +327,13 @@ pytest test_fraud_detector.py -v
 
 ### Q: What's the latency budget?
 **A:** <100ms. Most PSP decisions happen in 50-300ms. Your scoring should be <50ms so the payment doesn't feel slow. That rules out expensive lookups or model inference at scale.
-
-## 📝 Notes for the Internship
-
-**What an interviewer wants to see:**
-
-1. **Data correctness over complexity** — Can you compute a median correctly? Can you handle edge cases (no history, one transaction)?
-
-2. **Threshold thinking** — Don't just pick 0.7 for fun. Plot precision vs recall, understand the tradeoff between fraud loss and friction cost.
-
-3. **Instrumentation** — Log every decision, measure false-positive rate. "I don't know if it works" is not acceptable.
-
-4. **Handling edge cases** — New users, inactive users, high-variance users. Don't assume happy path.
-
-5. **Production thinking** — Can you scale this to 1M transactions/day? Can you explain why you chose SQLite vs PostgreSQL?
-
-**Red flags to avoid:**
-
-- ❌ Trying to reverse settled transactions
-- ❌ Hard-blocking transactions (too much friction)
-- ❌ Storing raw features without thinking about serving them
-- ❌ Not measuring false positives
-- ❌ Assuming training/serving compute the same features
-- ❌ Using floats for money (use integers)
-
-## 📚 References
-
-- RBI's April 2026 discussion paper on payment security
-- The SWIFT Payment Fraud Report (APP fraud section)
-- "Anomaly Detection in Payment Networks" (academic papers)
-- Fraud detection at scale: Stripe, Square, PayPal talks
-
 ## ⚠️ Limitations
 
 This is a learning/portfolio project, not a production fraud system. Being upfront about scope:
 
 - **Synthetic data only.** All training and demo transactions are generated, not real UPI transaction history. Real fraud rates in India's UPI system are well under 1%; the training set uses an inflated 3% fraud rate to have enough positive examples to learn from at this scale.
 - **Rule weights and model thresholds are not validated against real fraud losses.** In production these would be tuned against an actual cost function (fraud loss vs. friction cost) using real outcome data.
-- **No retraining or drift-monitoring pipeline.** A real system needs continuous label ingestion and periodic retraining; this project trains once on a static dataset.
+- **No retraining or drift-monitoring pipelie.** A real system needs continuous label ingestion and periodic retraining; this project trains once on a static dataset.
 - **Single-node, not load-tested.** No claim is made about throughput at real UPI transaction volumes (tens of thousands of TPS).
 - **No integration with real payment rails, KYC data, or device-attestation SDKs** — this scores a fixed set of 5 behavioral features computed from a toy schema.
 
